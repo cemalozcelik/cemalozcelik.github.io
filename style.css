@@ -1,46 +1,71 @@
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Poppins', sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #2b3a42; /* Dark blue-gray */
-    color: #d3d3d3;
+    background-color: #0a192f;
+    color: #e6f1ff;
+    line-height: 1.6;
 }
 
 header {
-    background-color: #1c252b; /* Darker blue-gray */
-    color: #c7c7c7; /* Bright orange */
-    padding: 1em 0;
+    background-color: rgba(10, 25, 47, 0.85);
+    color: #64ffda;
+    padding: 2em 0;
     text-align: center;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
 
 header h1 {
-    margin: 0.2em 0;
+    margin: 0;
+    font-size: 2.5em;
+    font-weight: 700;
+    letter-spacing: 1px;
 }
 
 header p {
-    margin: 0;
-    font-size: 1.2em;
+    margin: 0.5em 0 0;
+    font-size: 1.3em;
+    color: #8892b0;
 }
 
 section {
-    margin: 2em auto;
-    padding: 1em;
-    max-width: 800px;
-    background-color: #333f48; /* Medium blue-gray */
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    margin: 3em auto;
+    padding: 2em;
+    max-width: 1000px;
+    background-color: rgba(17, 34, 64, 0.7);
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+}
+
+section:hover {
+    transform: translateY(-5px);
 }
 
 h2 {
-    color: #d3d3d3;
-    border-bottom: 2px solid #6e8658; /* Deep red */
-    padding-bottom: 0.5em;
+    color: #64ffda;
+    border-bottom: 2px solid #64ffda;
+    padding-bottom: 0.8em;
+    font-size: 2em;
+    margin-bottom: 1em;
 }
 
 h3 {
-    color: #ebe7de; /* Bright orange */
-    margin-top: 1.5em;
+    color: #ccd6f6;
+    margin-top: 2em;
+    font-size: 1.5em;
+    position: relative;
+    padding-left: 1em;
+}
+
+h3::before {
+    content: "▹";
+    position: absolute;
+    left: 0;
+    color: #64ffda;
 }
 
 ul {
@@ -49,26 +74,46 @@ ul {
 }
 
 li {
-    margin: 0.8em 0;
+    margin: 1.2em 0;
+    padding: 1em;
+    background-color: rgba(17, 34, 64, 0.5);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+li:hover {
+    background-color: rgba(100, 255, 218, 0.1);
+    transform: translateX(10px);
 }
 
 a {
-    color: #b3b361; /* Bright orange */
+    color: #64ffda;
     text-decoration: none;
-    font-weight: bold;
+    font-weight: 600;
+    transition: color 0.3s ease;
 }
 
 a:hover {
-    text-decoration: underline;
+    color: #fff;
+    text-decoration: none;
 }
 
 p {
-    margin: 0.5em 0;
+    margin: 0.8em 0;
+    color: #8892b0;
 }
 
 @media (max-width: 600px) {
     section {
-        margin: 1em;
-        padding: 0.8em;
+        margin: 1.5em;
+        padding: 1.2em;
+    }
+    
+    header h1 {
+        font-size: 2em;
+    }
+    
+    header p {
+        font-size: 1.1em;
     }
 }
