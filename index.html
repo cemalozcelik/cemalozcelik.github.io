@@ -110,45 +110,45 @@
         }
         
         .name {
-          font-size: 3.5rem;
-          font-weight: bold;
-          font-family: 'Courier New', monospace;
-          margin-bottom: 20px;
-          position: relative;
-          color: rgba(255, 255, 255, 0.15); /* dim placeholder */
-          text-shadow: 0 0 12px rgba(0, 255, 136, 0.25);
-          letter-spacing: 1px;
-        }
+  font-size: 3.5rem;
+  font-weight: bold;
+  font-family: 'Courier New', monospace;
+  margin-bottom: 20px;
+  position: relative;
+  color: rgba(255, 255, 255, 0.15); /* dim placeholder */
+  text-shadow: 0 0 12px rgba(0, 255, 136, 0.25);
+  letter-spacing: 1px;
+}
 
-        .typewriter {
-          display: inline-block;
-          position: relative;
-          height: 3.8rem;
-          overflow: hidden;
-        }
+.typewriter {
+  display: inline-block;
+  position: relative;
+  height: 3.8rem;
+  overflow: hidden;
+}
 
-        .typewriter .fill-text {
-          position: absolute;
-          top: 0;
-          left: 0;
-          white-space: nowrap;
-          overflow: hidden;
-          background: linear-gradient(45deg, #00ff88, #00ccff);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
-          animation: fill-animation 4s ease-in-out infinite;
-        }
+.typewriter .fill-text {
+  position: absolute;
+  top: 0;
+  left: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  background: linear-gradient(45deg, #00ff88, #00ccff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: fill-animation 4s ease-in-out infinite;
+}
 
-        .typewriter .cursor {
-          position: absolute;
-          right: -5px;
-          top: 0;
-          width: 2px;
-          height: 100%;
-          background: #00ff88;
-          animation: cursor-blink 1s steps(2, start) infinite;
-        }
+.typewriter .cursor {
+  position: absolute;
+  right: -5px;
+  top: 0;
+  width: 2px;
+  height: 100%;
+  background: #00ff88;
+  animation: cursor-blink 1s steps(2, start) infinite;
+}
 
 
         @keyframes fill-animation {
@@ -414,7 +414,6 @@
             height: 100% !important;
             display: block;
             cursor: crosshair;
-            touch-action: none;
         }
 
         .game-ui {
@@ -574,12 +573,56 @@
             }
 
             .game-container {
-                height: 400px;
+                height: 300px; /* Mobilde daha küçük */
             }
 
             .game-controls {
-                flex-direction: column;
+                flex-direction: row; /* Mobilde yan yana */
                 align-items: center;
+                gap: 8px;
+                bottom: 10px;
+            }
+
+            .game-btn {
+                padding: 8px 12px;
+                font-size: 0.8rem;
+            }
+
+            .game-ui {
+                top: 10px;
+                left: 10px;
+                gap: 5px;
+            }
+
+            .game-stat {
+                padding: 6px 10px;
+                font-size: 0.8rem;
+                min-width: 80px;
+            }
+
+            .game-instructions {
+                margin-bottom: 15px;
+                padding: 15px;
+            }
+
+            .game-instructions h4 {
+                font-size: 1rem;
+            }
+
+            .game-instructions ul {
+                font-size: 0.9rem;
+            }
+
+            /* Touch-friendly adjustments */
+            #game-canvas {
+                cursor: pointer; /* Normal pointer for mobile */
+                touch-action: manipulation; /* Better touch handling */
+            }
+
+            /* Hide some instructions on mobile to save space */
+            .game-instructions li:nth-child(4),
+            .game-instructions li:nth-child(5) {
+                display: none;
             }
         }
 
@@ -725,11 +768,11 @@
             <div class="game-instructions">
                 <h4>🎯 Cube Hunter 3D</h4>
                 <ul>
-                    <li>Click on the colorful cubes to destroy them and earn points</li>
+                    <li>Tap/Click on the colorful cubes to destroy them</li>
                     <li>Each cube destroyed gives you 10 points</li>
-                    <li>Cubes move around randomly - test your reflexes!</li>
-                    <li>Use mouse to look around and click to shoot</li>
                     <li>Try to get the highest score possible!</li>
+                    <li class="desktop-only">Use mouse to look around and click to shoot</li>
+                    <li class="desktop-only">Cubes move around randomly - test your reflexes!</li>
                 </ul>
             </div>
             <div class="game-container">
@@ -866,7 +909,7 @@
         gameRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         gameRenderer.setClearColor(0x000011, 1);
 
-
+        
         // Game variables
         let gameRunning = false;
         let gamePaused = false;
@@ -967,13 +1010,33 @@
         const raycaster = new THREE.Raycaster();
         const mouse = new THREE.Vector2();
 
-        // Handle mouse clicks
-        gameCanvas.addEventListener('click', (event) => {
+        // Handle touch and mouse clicks for mobile compatibility
+        function handleGameInteraction(event) {
             if (!gameRunning || gamePaused) return;
             
+            event.preventDefault(); // Prevent default touch behavior
+            
+            let clientX, clientY;
+            
+            // Handle both touch and mouse events
+            if (event.type === 'touchstart' || event.type === 'touchend') {
+                if (event.touches && event.touches.length > 0) {
+                    clientX = event.touches[0].clientX;
+                    clientY = event.touches[0].clientY;
+                } else if (event.changedTouches && event.changedTouches.length > 0) {
+                    clientX = event.changedTouches[0].clientX;
+                    clientY = event.changedTouches[0].clientY;
+                } else {
+                    return;
+                }
+            } else {
+                clientX = event.clientX;
+                clientY = event.clientY;
+            }
+            
             const rect = gameCanvas.getBoundingClientRect();
-            mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
-            mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+            mouse.x = ((clientX - rect.left) / rect.width) * 2 - 1;
+            mouse.y = -((clientY - rect.top) / rect.height) * 2 + 1;
             
             raycaster.setFromCamera(mouse, gameCamera);
             const intersects = raycaster.intersectObjects(gameCubes.map(cube => cube.mesh));
@@ -1006,7 +1069,11 @@
                     }
                 }
             }
-        });
+        }
+
+        // Add both touch and mouse event listeners
+        gameCanvas.addEventListener('click', handleGameInteraction);
+        gameCanvas.addEventListener('touchend', handleGameInteraction, { passive: false });
 
         // Create explosion effect
         function createExplosion(position) {
