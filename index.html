@@ -3,338 +3,1309 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive 3D Cube</title>
+    <meta name="description" content="Cemal Özçelik - Software Developer, AI Enthusiast.">
+    <meta name="keywords" content="Cemal Özçelik, Software Engineer, CV, AI, Developer">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <title>Cemal Özçelik - Software Engineer</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
-        }
-
-        #container {
-            position: relative;
-            width: 100vw;
-            height: 100vh;
-        }
-
-        #controls {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            background: rgba(0, 0, 0, 0.8);
-            padding: 20px;
-            border-radius: 15px;
-            color: white;
-            min-width: 250px;
-            backdrop-filter: blur(10px);
-            z-index: 100;
-        }
-
-        #controls h2 {
-            margin: 0 0 20px 0;
-            color: #4ecdc4;
-            font-size: 20px;
-        }
-
-        .color-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-            margin-bottom: 20px;
-        }
-
-        .color-btn {
-            padding: 10px;
-            border: 2px solid transparent;
-            border-radius: 8px;
-            color: white;
+        #scrollToTop {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #00ccff;
+            color: black;
+            padding: 10px 14px;
+            border-radius: 30px;
             cursor: pointer;
-            font-size: 12px;
             font-weight: bold;
-            text-shadow: 1px 1px 1px rgba(0,0,0,0.8);
+            display: none;
+            z-index: 999;
             transition: all 0.3s ease;
         }
 
-        .color-btn:hover {
-            transform: scale(1.05);
+        #scrollToTop:hover {
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(0, 204, 255, 0.5);
         }
 
-        .color-btn.active {
-            border-color: white;
-            box-shadow: 0 0 20px rgba(255,255,255,0.5);
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
+            background-attachment: fixed;
+            background-size: 100% 100%;
+            color: white;
+            overflow-x: hidden;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        #particles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            pointer-events: none;
         }
 
-        .control-group {
+        #three-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 2;
+            pointer-events: none;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .header {
+            text-align: center;
+            padding: 80px 0;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            margin-bottom: 40px;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(0, 255, 136, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 255, 136, 0.1);
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .profile-img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 4px solid #00ff88;
             margin-bottom: 20px;
-        }
-
-        .control-group label {
+            background: linear-gradient(45deg, #00ff88, #00cc66);
             display: flex;
             align-items: center;
-            cursor: pointer;
-            font-size: 14px;
+            justify-content: center;
+            font-size: 60px;
+            margin: 0 auto 20px;
+            animation: pulse 2s infinite;
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.5);
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 30px rgba(0, 255, 136, 0.5); }
+            50% { box-shadow: 0 0 50px rgba(0, 255, 136, 0.8); }
+            100% { box-shadow: 0 0 30px rgba(0, 255, 136, 0.5); }
+        }
+        
+        .name {
+          font-size: 3.5rem;
+          font-weight: bold;
+          font-family: 'Courier New', monospace;
+          margin-bottom: 20px;
+          position: relative;
+          color: rgba(255, 255, 255, 0.15); /* dim placeholder */
+          text-shadow: 0 0 12px rgba(0, 255, 136, 0.25);
+          letter-spacing: 1px;
         }
 
-        .control-group input[type="checkbox"] {
-            margin-right: 10px;
-            transform: scale(1.2);
+        .typewriter {
+          display: inline-block;
+          position: relative;
+          height: 3.8rem;
+          overflow: hidden;
         }
 
-        .control-group input[type="range"] {
+        .typewriter .fill-text {
+          position: absolute;
+          top: 0;
+          left: 0;
+          white-space: nowrap;
+          overflow: hidden;
+          background: linear-gradient(45deg, #00ff88, #00ccff);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          animation: fill-animation 4s ease-in-out infinite;
+        }
+
+        .typewriter .cursor {
+          position: absolute;
+          right: -5px;
+          top: 0;
+          width: 2px;
+          height: 100%;
+          background: #00ff88;
+          animation: cursor-blink 1s steps(2, start) infinite;
+        }
+
+
+        @keyframes fill-animation {
+            0%, 30% { width: 0%; }
+            50%, 70% { width: 100%; }
+            100% { width: 0%; }
+        }
+
+        @keyframes cursor-move {
+            0%, 30% { left: 0%; }
+            50%, 70% { left: 100%; }
+            100% { left: 0%; }
+        }
+
+        @keyframes cursor-blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+        
+        .title {
+            font-size: 1.8rem;
+            color: #00ccff;
+            margin-bottom: 20px;
+        }
+        
+        .section {
+            background: rgba(0, 0, 0, 0.4);
+            margin-bottom: 30px;
+            border-radius: 15px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
             width: 100%;
-            margin-top: 8px;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 136, 0.1), transparent);
+            transition: left 0.5s;
         }
-
-        .instructions {
-            background: rgba(255, 255, 255, 0.1);
+        
+        .section:hover::before {
+            left: 100%;
+        }
+        
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 255, 136, 0.2);
+            border-color: rgba(0, 255, 136, 0.5);
+        }
+        
+        .section-title {
+            font-size: 2rem;
+            color: #00ff88;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .section-title::before {
+            content: '';
+            width: 4px;
+            height: 30px;
+            background: linear-gradient(180deg, #00ff88, #00ccff);
+            border-radius: 2px;
+        }
+        
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .skill-category {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .skill-category:hover {
+            background: rgba(0, 255, 136, 0.1);
+            transform: scale(1.03);
+            box-shadow: 0 10px 25px rgba(0, 255, 136, 0.2);
+        }
+        
+        .skill-category h3 {
+            color: #00ccff;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        
+        .skill-tag {
+            display: inline-block;
+            background: linear-gradient(45deg, #00ff88, #00ccff);
+            color: #000;
+            padding: 8px 15px;
+            margin: 5px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .skill-tag:hover {
+            transform: scale(1.1) rotate(2deg);
+            box-shadow: 0 5px 15px rgba(0, 255, 136, 0.4);
+        }
+        
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+        
+        .project-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 25px;
+            border: 1px solid rgba(0, 136, 255, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .project-card:hover {
+            background: rgba(0, 136, 255, 0.1);
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 136, 255, 0.2);
+        }
+        
+        .project-card h3 {
+            color: #00ccff;
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #00ff88;
+            padding-bottom: 10px;
+        }
+        
+        .project-item {
+            margin-bottom: 20px;
             padding: 15px;
-            border-radius: 8px;
-            font-size: 14px;
-            line-height: 1.4;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            border-left: 4px solid #00ff88;
+            transition: all 0.3s ease;
         }
 
-        #info {
+        .project-item:hover {
+            background: rgba(0, 0, 0, 0.3);
+            transform: translateX(5px);
+        }
+        
+        .project-item h4 {
+            color: #00ff88;
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+        
+        .project-item p {
+            color: #ccc;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+        
+        .project-links {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(45deg, #00ff88, #00ccff);
+            color: #000;
+            padding: 8px 16px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            transform: scale(1.05) rotate(1deg);
+            box-shadow: 0 5px 15px rgba(0, 255, 136, 0.4);
+            color: #000;
+        }
+        
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        
+        .contact-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid rgba(0, 136, 255, 0.3);
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .contact-item:hover {
+            background: rgba(0, 136, 255, 0.1);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 136, 255, 0.2);
+            color: white;
+        }
+        
+        .contact-icon {
+            font-size: 2.5rem;
+            color: #00ccff;
+            transition: all 0.3s ease;
+        }
+
+        .contact-item:hover .contact-icon {
+            transform: scale(1.2) rotate(5deg);
+        }
+
+        /* 3D Game Section Styles */
+        .game-section {
+            background: rgba(0, 0, 0, 0.6);
+            border: 2px solid rgba(255, 0, 136, 0.5);
+            box-shadow: 0 20px 40px rgba(255, 0, 136, 0.2);
+        }
+
+        .game-container {
+            position: relative;
+            height: 600px;
+            width: 100%;
+            border-radius: 15px;
+            overflow: hidden;
+            background: radial-gradient(circle at center, rgba(255, 0, 136, 0.1), rgba(0, 0, 0, 0.8));
+        }
+
+        #game-canvas {
+            width: 100% !important;
+            height: 100% !important;
+            display: block;
+            cursor: crosshair;
+            touch-action: none;
+        }
+
+        .game-ui {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .game-stat {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 10px 15px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 0, 136, 0.5);
+            color: #ff0088;
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+            min-width: 120px;
+        }
+
+        .game-controls {
             position: absolute;
             bottom: 20px;
-            right: 20px;
-            background: rgba(0, 0, 0, 0.8);
-            padding: 15px;
-            border-radius: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 100;
+        }
+
+        .game-btn {
+            background: linear-gradient(45deg, #ff0088, #ff4400);
             color: white;
-            font-size: 14px;
-            backdrop-filter: blur(10px);
+            padding: 12px 20px;
+            border: none;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Courier New', monospace;
+        }
+
+        .game-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 5px 20px rgba(255, 0, 136, 0.5);
+        }
+
+        .game-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .game-instructions {
+            margin-bottom: 20px;
+            padding: 20px;
+            background: rgba(255, 0, 136, 0.1);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 0, 136, 0.3);
+        }
+
+        .game-instructions h4 {
+            color: #ff0088;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .game-instructions ul {
+            color: #ccc;
+            padding-left: 20px;
+        }
+
+        .game-instructions li {
+            margin-bottom: 5px;
+        }
+        
+        .floating-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 3;
+        }
+        
+        .floating-element {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #00ff88;
+            border-radius: 50%;
+            animation: float-random 10s infinite linear;
+        }
+        
+        @keyframes float-random {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        .glitch {
+            animation: glitch 3s infinite;
+        }
+        
+        @keyframes glitch {
+            0%, 90%, 100% {
+                transform: translate(0);
+            }
+            10% {
+                transform: translate(-2px, -2px);
+            }
+            20% {
+                transform: translate(2px, 2px);
+            }
+            30% {
+                transform: translate(-2px, 2px);
+            }
+            40% {
+                transform: translate(2px, -2px);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .name {
+                font-size: 2.5rem;
+            }
+            
+            .title {
+                font-size: 1.3rem;
+            }
+            
+            .section {
+                padding: 20px;
+            }
+            
+            .skills-grid, .projects-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .contact-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            }
+
+            .game-container {
+                height: 400px;
+            }
+
+            .game-controls {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        /* Additional animations */
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-in {
+            animation: slideInUp 0.6s ease-out;
+        }
+
+        /* Smooth scroll behavior */
+        html {
+            scroll-behavior: smooth;
         }
     </style>
 </head>
 <body>
-    <div id="container">
-        <div id="controls">
-            <h2>🎮 Controls</h2>
-            
-            <div class="control-group">
-                <h3 style="margin: 0 0 10px 0; font-size: 16px;">Cube Color:</h3>
-                <div class="color-grid" id="colorButtons"></div>
-            </div>
+    <canvas id="particles-canvas"></canvas>
+    <canvas id="three-canvas"></canvas>
 
-            <div class="control-group">
-                <label>
-                    <input type="checkbox" id="autoRotate" checked>
-                    Auto Rotate
-                </label>
-            </div>
+    <div class="floating-elements" id="floatingElements"></div>
+    <div id="scrollToTop">↑ Top</div>
 
-            <div class="control-group" id="speedControl">
-                <label>
-                    Speed: <span id="speedValue">10</span>
-                </label>
-                <input type="range" id="speedSlider" min="1" max="50" value="10">
+    <div class="container">
+        <header class="header">
+            <div class="profile-img">💻</div>
+            <h1 class="name typewriter">
+                Cemal Özçelik
+                <div class="fill-text">Cemal Özçelik</div>
+                <div class="cursor"></div>
+            </h1>
+            <p class="title">Software Developer | Engineer</p>
+            <p style="font-size: 1.2rem; color: #ccc; max-width: 700px; margin: 0 auto;">
+                A passionate software developer with expertise in algorithms, machine learning, and robotics. I build innovative solutions using modern programming languages and frameworks.
+            </p>
+        </header>
+        
+        <section class="section">
+            <h2 class="section-title">🚀 Technical Skills</h2>
+            <div class="skills-grid">
+                <div class="skill-category">
+                    <h3>Programming Languages</h3>
+                    <div>
+                        <span class="skill-tag">⚡ C++</span>
+                        <span class="skill-tag">🐍 Python</span>
+                        <span class="skill-tag">🟨 JavaScript</span>
+                        <span class="skill-tag">🔷 TypeScript</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3>Frameworks & Tools</h3>
+                    <div>
+                        <span class="skill-tag">⚛️ React</span>
+                        <span class="skill-tag">🐳 Docker</span>
+                        <span class="skill-tag">💾 Memcached</span>
+                        <span class="skill-tag">🤖 ROS</span>
+                        <span class="skill-tag">🎨 Three.js</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3>Specializations</h3>
+                    <div>
+                        <span class="skill-tag">🧠 AI & Machine Learning</span>
+                        <span class="skill-tag">📷 Computer Vision</span>
+                        <span class="skill-tag">🤖 Robotics</span>
+                        <span class="skill-tag">🔍 Image Processing</span>
+                    </div>
+                </div>
             </div>
+        </section>
+        
+        <section class="section">
+            <h2 class="section-title">💼 Featured Projects</h2>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <h3>🤖 Robotics & Algorithms</h3>
+                    <div class="project-item">
+                        <h4>Wall Track</h4>
+                        <p>Wall tracking using Bug2 algorithm with HAMER robot. Advanced path planning and obstacle avoidance implementation.</p>
+                        <div class="project-links">
+                            <a href="https://github.com/cemalozcelik/wall_track" class="btn" target="_blank">
+                                💻 Code
+                            </a>
+                            <a href="https://youtu.be/oqU4kFcNEf8" class="btn" target="_blank">
+                                🎥 Demo
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="project-item">
+                        <h4>Traveling Salesman Problem</h4>
+                        <p>Genetic algorithm implementation for optimal pathfinding. Evolutionary optimization for complex routing problems.</p>
+                        <div class="project-links">
+                            <a href="https://github.com/cemalozcelik/Traveling-Salesman-Problem" class="btn" target="_blank">
+                                💻 Code
+                            </a>
+                            <a href="https://youtu.be/Jhf8t7_aIiI" class="btn" target="_blank">
+                                🎥 Demo
+                            </a>
+                        </div>
+                    </div>
+                </div>
 
-            <div class="control-group">
-                <label>
-                    <input type="checkbox" id="showParticles" checked>
-                    Show Particles
-                </label>
+                <div class="project-card">
+                    <h3>🤖 AI & Computer Vision</h3>
+                    <div class="project-item">
+                        <h4>SIFT Basic</h4>
+                        <p>Scale-Invariant Feature Transform implementation for robust image analysis and feature detection.</p>
+                        <div class="project-links">
+                            <a href="https://github.com/cemalozcelik/sift-basic" class="btn" target="_blank">
+                                💻 Code
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="project-item">
+                        <h4>YOLOv3 Traffic Sign Detection</h4>
+                        <p>Real-time traffic sign detection system integrated with ROS for autonomous vehicle applications.</p>
+                        <div class="project-links">
+                            <a href="https://github.com/cemalozcelik/yolov3_ros_traffic_sign_detect" class="btn" target="_blank">
+                                💻 Code
+                            </a>
+                            <a href="https://youtu.be/gDueFX8bKuo" class="btn" target="_blank">
+                                🎥 Demo
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
+        </section>
 
-            <div class="instructions">
-                <strong>💡 How to interact:</strong><br>
-                • Drag to rotate the view<br>
-                • Scroll to zoom in/out<br>
-                • Use controls to customize<br>
-                • Click colors to change cube
+        <section class="section game-section">
+            <h2 class="section-title">🎮 Interactive 3D Experience</h2>
+            <div class="game-instructions">
+                <h4>🎯 Cube Hunter 3D</h4>
+                <ul>
+                    <li>Click on the colorful cubes to destroy them and earn points</li>
+                    <li>Each cube destroyed gives you 10 points</li>
+                    <li>Cubes move around randomly - test your reflexes!</li>
+                    <li>Use mouse to look around and click to shoot</li>
+                    <li>Try to get the highest score possible!</li>
+                </ul>
             </div>
-        </div>
-
-        <div id="info">
-            <div>🎯 <strong>Current Color:</strong> <span id="currentColor">Red</span></div>
-            <div>🔄 <strong>Rotating:</strong> <span id="rotateStatus">Yes</span></div>
-            <div>✨ <strong>Particles:</strong> <span id="particleStatus">On</span></div>
-        </div>
+            <div class="game-container">
+                <canvas id="game-canvas"></canvas>
+                <div class="game-ui">
+                    <div class="game-stat">Score: <span id="score">0</span></div>
+                    <div class="game-stat">Cubes: <span id="cubes-count">10</span></div>
+                    <div class="game-stat">Time: <span id="time">0</span>s</div>
+                </div>
+                <div class="game-controls">
+                    <button class="game-btn" id="start-btn">🚀 Start Game</button>
+                    <button class="game-btn" id="reset-btn" disabled>🔄 Reset</button>
+                    <button class="game-btn" id="pause-btn" disabled>⏸️ Pause</button>
+                </div>
+            </div>
+        </section>
+        
+        <section class="section">
+            <h2 class="section-title">📱 Let's Connect</h2>
+            <div class="contact-grid">
+                <a href="mailto:cemaloz745@gmail.com" class="contact-item" target="_blank">
+                    <div class="contact-icon">📧</div>
+                    <div>cemaloz745@gmail.com</div>
+                </a>
+                <a href="https://www.linkedin.com/in/cemal-ozcelik" class="contact-item" target="_blank">
+                    <div class="contact-icon">💼</div>
+                    <div>LinkedIn Profile</div>
+                </a>
+                <a href="https://github.com/cemalozcelik" class="contact-item" target="_blank">
+                    <div class="contact-icon">💻</div>
+                    <div>GitHub Profile</div>
+                </a>
+            </div>
+        </section>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script>
-        // Scene setup
-        const scene = new THREE.Scene();
+        // Typewriter effect - no longer needed since CSS handles it
+        // The typewriter effect is now pure CSS animation
+
+        // Three.js Scene Setup for Background
+        const threeScene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        const threeRenderer = new THREE.WebGLRenderer({ canvas: document.getElementById('three-canvas'), alpha: true });
         
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setClearColor(0x000000, 0);
-        document.getElementById('container').appendChild(renderer.domElement);
+        threeRenderer.setSize(window.innerWidth, window.innerHeight);
+        threeRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-        // Lighting
-        const ambientLight = new THREE.AmbientLight(0x404040, 0.4);
-        scene.add(ambientLight);
-
-        const pointLight1 = new THREE.PointLight(0xffffff, 1, 100);
-        pointLight1.position.set(10, 10, 10);
-        scene.add(pointLight1);
-
-        const pointLight2 = new THREE.PointLight(0x4ecdc4, 0.5, 100);
-        pointLight2.position.set(-10, -10, -10);
-        scene.add(pointLight2);
-
-        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
-        directionalLight.position.set(5, 5, 5);
-        scene.add(directionalLight);
-
-        // Create cube
-        const geometry = new THREE.BoxGeometry(2, 2, 2);
-        const material = new THREE.MeshStandardMaterial({ 
-            color: 0xff6b6b,
-            metalness: 0.3,
-            roughness: 0.4
-        });
-        const cube = new THREE.Mesh(geometry, material);
-        scene.add(cube);
-
-        // Create particles
-        const particles = new THREE.Group();
-        const particleGeometry = new THREE.SphereGeometry(0.05, 8, 8);
-        
-        for (let i = 0; i < 50; i++) {
-            const particleMaterial = new THREE.MeshBasicMaterial({
-                color: new THREE.Color().setHSL(i * 0.02, 0.7, 0.6),
-                transparent: true,
-                opacity: 0.6
-            });
-            
-            const particle = new THREE.Mesh(particleGeometry, particleMaterial);
-            particle.position.set(
-                (Math.random() - 0.5) * 20,
-                (Math.random() - 0.5) * 20,
-                (Math.random() - 0.5) * 20
-            );
-            particles.add(particle);
-        }
-        scene.add(particles);
-
-        // Camera position
-        camera.position.z = 6;
-
-        // Colors
-        const colors = [
-            { name: 'Red', value: 0xff6b6b },
-            { name: 'Blue', value: 0x4ecdc4 },
-            { name: 'Green', value: 0x45b7d1 },
-            { name: 'Purple', value: 0x96ceb4 },
-            { name: 'Orange', value: 0xfeca57 },
-            { name: 'Pink', value: 0xff9ff3 }
+        // Create floating geometric shapes for Three.js background
+        const geometries = [
+            new THREE.BoxGeometry(0.8, 0.8, 0.8),
+            new THREE.SphereGeometry(0.5, 16, 16),
+            new THREE.ConeGeometry(0.5, 1, 8),
+            new THREE.OctahedronGeometry(0.6),
+            new THREE.TorusGeometry(0.5, 0.2, 8, 50)
         ];
 
-        // Create color buttons
-        const colorButtonsContainer = document.getElementById('colorButtons');
-        let currentColorName = 'Red';
+        const threeMaterials = [
+            new THREE.MeshBasicMaterial({ color: 0x00ff88, transparent: true, opacity: 0.4 }),
+            new THREE.MeshBasicMaterial({ color: 0x00ccff, transparent: true, opacity: 0.4 }),
+            new THREE.MeshBasicMaterial({ color: 0xff6b6b, transparent: true, opacity: 0.4 }),
+            new THREE.MeshBasicMaterial({ color: 0xffff00, transparent: true, opacity: 0.4 }),
+            new THREE.MeshBasicMaterial({ color: 0xff00ff, transparent: true, opacity: 0.4 })
+        ];
 
-        colors.forEach((color, index) => {
-            const button = document.createElement('button');
-            button.className = 'color-btn';
-            button.style.backgroundColor = `#${color.value.toString(16).padStart(6, '0')}`;
-            button.textContent = color.name;
-            button.onclick = () => {
-                cube.material.color.setHex(color.value);
-                currentColorName = color.name;
-                document.getElementById('currentColor').textContent = color.name;
-                
-                // Update active button
-                document.querySelectorAll('.color-btn').forEach(btn => btn.classList.remove('active'));
-                button.classList.add('active');
+        const threeMeshes = [];
+        
+        for (let i = 0; i < 10; i++) {
+            const geometry = geometries[Math.floor(Math.random() * geometries.length)];
+            const material = threeMaterials[Math.floor(Math.random() * threeMaterials.length)];
+            const mesh = new THREE.Mesh(geometry, material);
+            
+            mesh.position.x = (Math.random() - 0.5) * 15;
+            mesh.position.y = (Math.random() - 0.5) * 15;
+            mesh.position.z = (Math.random() - 0.5) * 15;
+            
+            mesh.rotation.x = Math.random() * Math.PI;
+            mesh.rotation.y = Math.random() * Math.PI;
+            
+            mesh.velocity = {
+                x: (Math.random() - 0.5) * 0.01,
+                y: (Math.random() - 0.5) * 0.01,
+                z: (Math.random() - 0.5) * 0.01
             };
             
-            if (index === 0) button.classList.add('active');
-            colorButtonsContainer.appendChild(button);
-        });
-
-        // Controls
-        let autoRotate = true;
-        let rotationSpeed = 0.01;
-        let showParticles = true;
-        let mouseX = 0;
-        let mouseY = 0;
-        let isMouseDown = false;
-
-        // Control event listeners
-        document.getElementById('autoRotate').addEventListener('change', (e) => {
-            autoRotate = e.target.checked;
-            document.getElementById('rotateStatus').textContent = autoRotate ? 'Yes' : 'No';
-        });
-
-        document.getElementById('speedSlider').addEventListener('input', (e) => {
-            rotationSpeed = e.target.value * 0.001;
-            document.getElementById('speedValue').textContent = e.target.value;
-        });
-
-        document.getElementById('showParticles').addEventListener('change', (e) => {
-            showParticles = e.target.checked;
-            particles.visible = showParticles;
-            document.getElementById('particleStatus').textContent = showParticles ? 'On' : 'Off';
-        });
-
-        // Mouse controls
-        let targetRotationX = 0;
-        let targetRotationY = 0;
-
-        document.addEventListener('mousedown', (e) => {
-            isMouseDown = true;
-        });
-
-        document.addEventListener('mouseup', () => {
-            isMouseDown = false;
-        });
-
-        document.addEventListener('mousemove', (e) => {
-            if (isMouseDown) {
-                targetRotationY += (e.clientX - mouseX) * 0.005;
-                targetRotationX += (e.clientY - mouseY) * 0.005;
-            }
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-        });
-
-        // Mouse wheel zoom
-        document.addEventListener('wheel', (e) => {
-            camera.position.z += e.deltaY * 0.01;
-            camera.position.z = Math.max(2, Math.min(15, camera.position.z));
-        });
-
-        // Animation loop
-        function animate() {
-            requestAnimationFrame(animate);
-
-            // Auto rotation
-            if (autoRotate) {
-                cube.rotation.x += rotationSpeed;
-                cube.rotation.y += rotationSpeed * 0.7;
-            }
-
-            // Mouse rotation
-            cube.rotation.x += (targetRotationX - cube.rotation.x) * 0.1;
-            cube.rotation.y += (targetRotationY - cube.rotation.y) * 0.1;
-
-            // Animate particles
-            if (showParticles) {
-                particles.rotation.y += 0.001;
-                particles.children.forEach((particle, i) => {
-                    particle.position.y += Math.sin(Date.now() * 0.001 + i) * 0.002;
-                });
-            }
-
-            renderer.render(scene, camera);
+            threeScene.add(mesh);
+            threeMeshes.push(mesh);
         }
 
-        // Handle window resize
-        window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
+        camera.position.z = 8;
+
+        // Mouse movement effect for Three.js background
+        let mouseX = 0;
+        let mouseY = 0;
+        
+        document.addEventListener('mousemove', (event) => {
+            mouseX = (event.clientX / window.innerWidth) * 2 - 1;
+            mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
         });
 
-        // Start animation
+        // Three.js Animation loop for background
+        function animateThree() {
+            requestAnimationFrame(animateThree);
+            
+            threeMeshes.forEach((mesh, index) => {
+                mesh.rotation.x += 0.005 + index * 0.0005;
+                mesh.rotation.y += 0.005 + index * 0.0005;
+                
+                mesh.position.x += mesh.velocity.x;
+                mesh.position.y += mesh.velocity.y;
+                mesh.position.z += mesh.velocity.z;
+                
+                if (mesh.position.x > 10 || mesh.position.x < -10) mesh.velocity.x *= -1;
+                if (mesh.position.y > 10 || mesh.position.y < -10) mesh.velocity.y *= -1;
+                if (mesh.position.z > 10 || mesh.position.z < -10) mesh.velocity.z *= -1;
+            });
+            
+            camera.position.x += (mouseX * 1.5 - camera.position.x) * 0.02;
+            camera.position.y += (mouseY * 1.5 - camera.position.y) * 0.02;
+            camera.lookAt(threeScene.position);
+            
+            threeRenderer.render(threeScene, camera);
+        }
+
+        animateThree();
+
+        // 3D Game Setup
+        const gameCanvas = document.getElementById('game-canvas');
+        const gameScene = new THREE.Scene();
+        const gameCamera = new THREE.PerspectiveCamera(75, gameCanvas.offsetWidth / gameCanvas.offsetHeight, 0.1, 1000);
+        const gameRenderer = new THREE.WebGLRenderer({ canvas: gameCanvas, antialias: true });
+        
+        gameRenderer.setSize(gameCanvas.offsetWidth, gameCanvas.offsetHeight);
+        gameRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        gameRenderer.setClearColor(0x000011, 1);
+
+
+        // Game variables
+        let gameRunning = false;
+        let gamePaused = false;
+        let score = 0;
+        let gameTime = 0;
+        let gameCubes = [];
+        let gameStartTime = 0;
+
+        // Game lighting - increased brightness
+        const ambientLight = new THREE.AmbientLight(0x404040, 1.2);
+        gameScene.add(ambientLight);
+        
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 1.5);
+        directionalLight.position.set(10, 10, 10);
+        gameScene.add(directionalLight);
+        
+        // Add point light for better visibility
+        const pointLight = new THREE.PointLight(0xffffff, 1, 100);
+        pointLight.position.set(0, 0, 20);
+        gameScene.add(pointLight);
+
+        // Create starfield background
+        const starGeometry = new THREE.BufferGeometry();
+        const starCount = 1000;
+        const starPositions = new Float32Array(starCount * 3);
+        
+        for (let i = 0; i < starCount * 3; i++) {
+            starPositions[i] = (Math.random() - 0.5) * 200;
+        }
+        
+        starGeometry.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
+        const starMaterial = new THREE.PointsMaterial({ color: 0xffffff, size: 0.5 });
+        const stars = new THREE.Points(starGeometry, starMaterial);
+        gameScene.add(stars);
+
+        // Game cube class - simplified and more visible
+        class GameCube {
+            constructor() {
+                const size = 3; // Fixed large size
+                this.geometry = new THREE.BoxGeometry(size, size, size);
+                this.material = new THREE.MeshBasicMaterial({
+                    color: Math.random() * 0xffffff // Random bright color
+                });
+                this.mesh = new THREE.Mesh(this.geometry, this.material);
+                
+                // Position cubes in visible range
+                this.mesh.position.x = (Math.random() - 0.5) * 10;
+                this.mesh.position.y = (Math.random() - 0.5) * 6;
+                this.mesh.position.z = (Math.random() - 0.5) * 8;
+                
+                // Very slow movement
+                this.velocity = new THREE.Vector3(
+                    (Math.random() - 0.5) * 0.02,
+                    (Math.random() - 0.5) * 0.02,
+                    (Math.random() - 0.5) * 0.02
+                );
+                
+                console.log('Created cube at position:', this.mesh.position.x.toFixed(2), this.mesh.position.y.toFixed(2), this.mesh.position.z.toFixed(2));
+                gameScene.add(this.mesh);
+            }
+            
+            update() {
+                this.mesh.position.add(this.velocity);
+                this.mesh.rotation.x += 0.01;
+                this.mesh.rotation.y += 0.01;
+                
+                // Bounce off boundaries
+                if (this.mesh.position.x > 8 || this.mesh.position.x < -8) this.velocity.x *= -1;
+                if (this.mesh.position.y > 5 || this.mesh.position.y < -5) this.velocity.y *= -1;
+                if (this.mesh.position.z > 6 || this.mesh.position.z < -6) this.velocity.z *= -1;
+            }
+            
+            destroy() {
+                console.log('Destroying cube');
+                gameScene.remove(this.mesh);
+                this.geometry.dispose();
+                this.material.dispose();
+            }
+        }
+
+        // Initialize game cubes
+        function initGameCubes() {
+            // Clear existing cubes
+            gameCubes.forEach(cube => cube.destroy());
+            gameCubes = [];
+            
+            console.log('Initializing game cubes...');
+            
+            // Create new cubes
+            for (let i = 0; i < 5; i++) { // Reduced to 5 for testing
+                gameCubes.push(new GameCube());
+            }
+            updateCubesCount();
+            console.log('Created', gameCubes.length, 'cubes');
+        }
+
+        // Raycaster for click detection
+        const raycaster = new THREE.Raycaster();
+        const mouse = new THREE.Vector2();
+
+        // Handle mouse clicks
+        gameCanvas.addEventListener('click', (event) => {
+            if (!gameRunning || gamePaused) return;
+            
+            const rect = gameCanvas.getBoundingClientRect();
+            mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+            mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+            
+            raycaster.setFromCamera(mouse, gameCamera);
+            const intersects = raycaster.intersectObjects(gameCubes.map(cube => cube.mesh));
+            
+            if (intersects.length > 0) {
+                const hitCube = intersects[0].object;
+                const cubeIndex = gameCubes.findIndex(cube => cube.mesh === hitCube);
+                
+                if (cubeIndex !== -1) {
+                    // Create explosion effect
+                    createExplosion(hitCube.position);
+                    
+                    // Remove cube
+                    gameCubes[cubeIndex].destroy();
+                    gameCubes.splice(cubeIndex, 1);
+                    
+                    // Update score
+                    score += 10;
+                    updateScore();
+                    updateCubesCount();
+                    
+                    // Add new cube
+                    if (gameCubes.length < 8) {
+                        setTimeout(() => {
+                            if (gameRunning) {
+                                gameCubes.push(new GameCube());
+                                updateCubesCount();
+                            }
+                        }, 1000);
+                    }
+                }
+            }
+        });
+
+        // Create explosion effect
+        function createExplosion(position) {
+            const particleCount = 20;
+            const explosionGeometry = new THREE.BufferGeometry();
+            const explosionPositions = new Float32Array(particleCount * 3);
+            const explosionColors = new Float32Array(particleCount * 3);
+            
+            for (let i = 0; i < particleCount; i++) {
+                const i3 = i * 3;
+                explosionPositions[i3] = position.x + (Math.random() - 0.5) * 2;
+                explosionPositions[i3 + 1] = position.y + (Math.random() - 0.5) * 2;
+                explosionPositions[i3 + 2] = position.z + (Math.random() - 0.5) * 2;
+                
+                explosionColors[i3] = Math.random();
+                explosionColors[i3 + 1] = Math.random();
+                explosionColors[i3 + 2] = Math.random();
+            }
+            
+            explosionGeometry.setAttribute('position', new THREE.BufferAttribute(explosionPositions, 3));
+            explosionGeometry.setAttribute('color', new THREE.BufferAttribute(explosionColors, 3));
+            
+            const explosionMaterial = new THREE.PointsMaterial({
+                size: 0.3,
+                vertexColors: true,
+                transparent: true,
+                opacity: 1
+            });
+            
+            const explosion = new THREE.Points(explosionGeometry, explosionMaterial);
+            gameScene.add(explosion);
+            
+            // Animate explosion
+            let explosionTime = 0;
+            const explosionAnimation = () => {
+                explosionTime += 0.02;
+                explosionMaterial.opacity = 1 - explosionTime;
+                explosionMaterial.size = 0.3 + explosionTime * 2;
+                
+                if (explosionTime < 1) {
+                    requestAnimationFrame(explosionAnimation);
+                } else {
+                    gameScene.remove(explosion);
+                    explosionGeometry.dispose();
+                    explosionMaterial.dispose();
+                }
+            };
+            explosionAnimation();
+        }
+
+        // Set camera position - moved even closer
+        gameCamera.position.set(0, 0, 12);
+        gameCamera.lookAt(0, 0, 0);
+        
+        console.log('Camera position:', gameCamera.position.x, gameCamera.position.y, gameCamera.position.z);
+
+        // Game animation loop
+        function animateGame() {
+            requestAnimationFrame(animateGame);
+            
+            if (gameRunning && !gamePaused) {
+                // Update cubes
+                gameCubes.forEach(cube => cube.update());
+                
+                // Update timer
+                gameTime = Math.floor((Date.now() - gameStartTime) / 1000);
+                updateTime();
+                
+                // Rotate stars
+                stars.rotation.y += 0.001;
+            }
+            
+            gameRenderer.render(gameScene, gameCamera);
+        }
+
+        animateGame();
+
+        // Game UI functions
+        function updateScore() {
+            document.getElementById('score').textContent = score;
+        }
+        
+        function updateCubesCount() {
+            document.getElementById('cubes-count').textContent = gameCubes.length;
+        }
+        
+        function updateTime() {
+            document.getElementById('time').textContent = gameTime;
+        }
+
+        // Game control functions
+        function startGame() {
+            gameRunning = true;
+            gamePaused = false;
+            score = 0;
+            gameTime = 0;
+            gameStartTime = Date.now();
+            
+            updateScore();
+            updateTime();
+            initGameCubes();
+            
+            document.getElementById('start-btn').disabled = true;
+            document.getElementById('reset-btn').disabled = false;
+            document.getElementById('pause-btn').disabled = false;
+            document.getElementById('pause-btn').textContent = '⏸️ Pause';
+        }
+
+        function resetGame() {
+            gameRunning = false;
+            gamePaused = false;
+            score = 0;
+            gameTime = 0;
+            
+            gameCubes.forEach(cube => cube.destroy());
+            gameCubes = [];
+            
+            updateScore();
+            updateTime();
+            updateCubesCount();
+            
+            document.getElementById('start-btn').disabled = false;
+            document.getElementById('reset-btn').disabled = true;
+            document.getElementById('pause-btn').disabled = true;
+            document.getElementById('pause-btn').textContent = '⏸️ Pause';
+        }
+
+        function togglePause() {
+            if (!gameRunning) return;
+            
+            gamePaused = !gamePaused;
+            
+            if (gamePaused) {
+                document.getElementById('pause-btn').textContent = '▶️ Resume';
+            } else {
+                document.getElementById('pause-btn').textContent = '⏸️ Pause';
+                gameStartTime = Date.now() - (gameTime * 1000);
+            }
+        }
+
+        // Event listeners for game controls
+        document.getElementById('start-btn').addEventListener('click', startGame);
+        document.getElementById('reset-btn').addEventListener('click', resetGame);
+        document.getElementById('pause-btn').addEventListener('click', togglePause);
+
+        // Particle system (2D Canvas)
+        const canvas = document.getElementById('particles-canvas');
+        const ctx = canvas.getContext('2d');
+        
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        
+        window.addEventListener('resize', () => {
+            resizeCanvas();
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            threeRenderer.setSize(window.innerWidth, window.innerHeight);
+            
+            // Resize game canvas properly
+            const newWidth = gameCanvas.offsetWidth || gameCanvas.clientWidth || 800;
+            const newHeight = gameCanvas.offsetHeight || gameCanvas.clientHeight || 600;
+            
+            gameCamera.aspect = newWidth / newHeight;
+            gameCamera.updateProjectionMatrix();
+            gameRenderer.setSize(newWidth, newHeight);
+            
+            console.log('Game canvas resized to:', newWidth, 'x', newHeight);
+        });
+        
+        const particles = [];
+        const particleCount = 40;
+        const scrollBtn = document.getElementById("scrollToTop");
+        
+        window.addEventListener("scroll", () => {
+            scrollBtn.style.display = window.scrollY > 300 ? "block" : "none";
+        });
+        scrollBtn.addEventListener("click", () => {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = (Math.random() - 0.5) * 0.5;
+                this.size = Math.random() * 2 + 1;
+                this.opacity = Math.random() * 0.5 + 0.2;
+                this.color = `hsl(${Math.random() * 60 + 160}, 70%, 60%)`;
+            }
+            
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                
+                if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+            }
+            
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.opacity;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+                
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size * 2, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.globalAlpha = this.opacity * 0.1;
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+        
+        for (let i = 0; i < particleCount; i++) {
+            particles.push(new Particle());
+        }
+        
+        function drawConnections() {
+            ctx.strokeStyle = 'rgba(0, 255, 136, 0.1)';
+            ctx.lineWidth = 1;
+            
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance < 120) {
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.globalAlpha = (120 - distance) / 120 * 0.1;
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+        
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            particles.forEach(particle => {
+                particle.update();
+                particle.draw();
+            });
+            
+            drawConnections();
+            
+            requestAnimationFrame(animate);
+        }
+        
         animate();
+
+        // Create some floating elements
+        function createFloatingElements() {
+            const container = document.getElementById('floatingElements');
+            
+            setInterval(() => {
+                const element = document.createElement('div');
+                element.className = 'floating-element';
+                element.style.left = Math.random() * 100 + '%';
+                element.style.animationDuration = (Math.random() * 5 + 5) + 's';
+                element.style.animationDelay = Math.random() * 2 + 's';
+                
+                container.appendChild(element);
+                
+                setTimeout(() => {
+                    if (element.parentNode) {
+                        element.parentNode.removeChild(element);
+                    }
+                }, 10000);
+            }, 1000);
+        }
+        
+        createFloatingElements();
+
+        // Add some intersection observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-in');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.section').forEach(section => {
+            observer.observe(section);
+        });
     </script>
 </body>
 </html>
