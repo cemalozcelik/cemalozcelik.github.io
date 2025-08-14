@@ -42,6 +42,9 @@
             font-size: 20px;
             animation: float-leaf 15s infinite linear;
             color: #6c757d;
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transform-origin: center;
+            will-change: transform;
         }
         
         .leaf:nth-child(2n) {
@@ -60,6 +63,17 @@
             animation-duration: 20s;
             font-size: 14px;
             color: #495057;
+        }
+        
+        .leaf.mouse-nearby {
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
+            filter: brightness(1.2) saturate(1.3);
+            z-index: 10;
+        }
+        
+        .leaf.mouse-interaction {
+            animation-play-state: paused;
+            transition: all 0.8s cubic-bezier(0.23, 1, 0.320, 1);
         }
         
         @keyframes float-leaf {
@@ -388,6 +402,215 @@
             font-size: 0.9rem;
         }
         
+        /* Timeline Styles */
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 30px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, #6c757d, #adb5bd, #6c757d);
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 40px;
+            padding-left: 80px;
+            opacity: 0;
+            transform: translateX(-20px);
+            transition: all 0.6s ease;
+        }
+        
+        .timeline-item.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .timeline-marker {
+            position: absolute;
+            left: 21px;
+            top: 5px;
+            width: 20px;
+            height: 20px;
+            background: #212529;
+            border: 3px solid #f8f9fa;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 0 4px rgba(33, 37, 41, 0.1);
+        }
+        
+        .timeline-marker.education {
+            background: #6c757d;
+            box-shadow: 0 0 0 4px rgba(108, 117, 125, 0.1);
+        }
+        
+        .timeline-item:hover .timeline-marker {
+            transform: scale(1.2);
+            box-shadow: 0 0 0 8px rgba(33, 37, 41, 0.2);
+        }
+        
+        .timeline-item:hover .timeline-marker.education {
+            box-shadow: 0 0 0 8px rgba(108, 117, 125, 0.2);
+        }
+        
+        .timeline-content {
+            background: #f8f9fa;
+            padding: 25px;
+            border: 1px solid #e9ecef;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .timeline-content::before {
+            content: '';
+            position: absolute;
+            left: -8px;
+            top: 20px;
+            width: 0;
+            height: 0;
+            border-top: 8px solid transparent;
+            border-bottom: 8px solid transparent;
+            border-right: 8px solid #f8f9fa;
+        }
+        
+        .timeline-item:hover .timeline-content {
+            background: #e9ecef;
+            border-color: #adb5bd;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .timeline-item:hover .timeline-content::before {
+            border-right-color: #e9ecef;
+        }
+        
+        .timeline-date {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: #6c757d;
+            font-weight: 500;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .timeline-content h3 {
+            font-family: 'JetBrains Mono', monospace;
+            color: #212529;
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        
+        .timeline-content h4 {
+            color: #495057;
+            font-size: 1rem;
+            margin-bottom: 15px;
+            font-weight: 400;
+            font-style: italic;
+        }
+        
+        .timeline-content p {
+            color: #6c757d;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        
+        .timeline-skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 15px;
+        }
+        
+        .timeline-skill {
+            background: #ffffff;
+            color: #495057;
+            padding: 4px 10px;
+            border: 1px solid #dee2e6;
+            font-size: 0.75rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 400;
+            transition: all 0.3s ease;
+        }
+        
+        .timeline-skill:hover {
+            background: #212529;
+            color: #ffffff;
+            border-color: #212529;
+            transform: translateY(-1px);
+        }
+        
+        .location {
+            font-size: 0.85rem;
+            color: #868e96;
+            font-style: italic;
+            margin-bottom: 15px;
+        }
+        
+        .experience-details {
+            margin: 20px 0;
+        }
+        
+        .project-highlight {
+            margin-bottom: 15px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.7);
+            border-left: 3px solid #6c757d;
+            transition: all 0.3s ease;
+        }
+        
+        .project-highlight:hover {
+            border-left-color: #212529;
+            background: rgba(255, 255, 255, 0.9);
+            transform: translateX(5px);
+        }
+        
+        .project-highlight strong {
+            display: block;
+            color: #212529;
+            margin-bottom: 5px;
+            font-size: 0.95rem;
+        }
+        
+        .project-highlight p {
+            margin: 0;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        
+        .course-achievements {
+            margin: 15px 0;
+            padding: 15px;
+            background: rgba(108, 117, 125, 0.1);
+            border-radius: 5px;
+        }
+        
+        .course-achievements strong {
+            display: block;
+            color: #212529;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+        
+        .course-achievements ul {
+            margin: 0;
+            padding-left: 20px;
+            color: #495057;
+        }
+        
+        .course-achievements li {
+            margin-bottom: 5px;
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+        
         /* Scroll to top button */
         .scroll-top {
             position: fixed;
@@ -446,6 +669,23 @@
             
             .skills-grid, .projects-grid, .contact-grid {
                 grid-template-columns: 1fr;
+            }
+            
+            /* Mobile timeline adjustments */
+            .timeline::before {
+                left: 15px;
+            }
+            
+            .timeline-item {
+                padding-left: 50px;
+            }
+            
+            .timeline-marker {
+                left: 6px;
+            }
+            
+            .timeline-content::before {
+                left: -8px;
             }
         }
         
@@ -588,6 +828,107 @@
         
         <section class="section fade-in">
             <h2 class="section-title">
+                <span class="icon">💼</span>
+                Professional Experience
+            </h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">Kas 2022 - Present</div>
+                        <h3>Software Engineer</h3>
+                        <h4>OPTOFİL · Tam zamanlı</h4>
+                        <p class="location">Esenler, Istanbul, Türkiye · 2 yıl 10 ay</p>
+                        <div class="experience-details">
+                            <div class="project-highlight">
+                                <strong>AI-Powered Image Labeling Web Application</strong>
+                                <p>Full-Stack Development using TypeScript + Flask architecture for automated medical image processing and labeling systems. Implemented YOLO object detection models with ONNX conversion for optimized inference, utilizing PyTorch for custom model development and training.</p>
+                            </div>
+                            <div class="project-highlight">
+                                <strong>Deep Learning Based Automated Cell Counter</strong>
+                                <p>Developed advanced software/firmware solutions using Python for automated biological cell counting and analysis. Deployed models on Jetson Nano hardware with Qt framework for user interface development and TensorFlow for deep learning inference optimization.</p>
+                            </div>
+                            <div class="project-highlight">
+                                <strong>Zernike Polynomial Calculation Software</strong>
+                                <p>Implemented mathematical algorithms in C++ with OpenCV integration for optical analysis and image processing applications. Utilized Eigen library for linear algebra computations and OpenCV for advanced computer vision operations and image manipulation.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-skills">
+                            <span class="timeline-skill">Python</span>
+                            <span class="timeline-skill">TypeScript</span>
+                            <span class="timeline-skill">Flask</span>
+                            <span class="timeline-skill">C++</span>
+                            <span class="timeline-skill">OpenCV</span>
+                            <span class="timeline-skill">YOLO</span>
+                            <span class="timeline-skill">ONNX</span>
+                            <span class="timeline-skill">PyTorch</span>
+                            <span class="timeline-skill">TensorFlow</span>
+                            <span class="timeline-skill">Jetson Nano</span>
+                            <span class="timeline-skill">Qt Framework</span>
+                            <span class="timeline-skill">Eigen</span>
+                            <span class="timeline-skill">Computer Vision</span>
+                            <span class="timeline-skill">Deep Learning</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-marker education"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">Eyl 2024</div>
+                        <h3>Master of Science - MS, Artificial Intelligence</h3>
+                        <h4>Gebze Teknik Üniversitesi</h4>
+                        <p>Advanced studies in Artificial Intelligence with focus on cutting-edge AI technologies and research methodologies.</p>
+                        <div class="course-achievements">
+                            <strong>📚 Courses Achieved:</strong>
+                            <ul>
+                                <li>Coding Theory</li>
+                                <li>Digital Image Processing</li>
+                                <li>Machine Learning</li>
+                                <li>Deep Learning</li>
+                            </ul>
+                        </div>
+                        <div class="timeline-skills">
+                            <span class="timeline-skill">Python</span>
+                            <span class="timeline-skill">Deep Learning</span>
+                            <span class="timeline-skill">Machine Learning</span>
+                            <span class="timeline-skill">AI Research</span>
+                            <span class="timeline-skill">Image Processing</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-marker education"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">Eyl 2017 - Eki 2022</div>
+                        <h3>Bachelor's Degree, Electrical and Electronics Engineering</h3>
+                        <h4>Eskişehir Osmangazi Üniversitesi</h4>
+                        <p>Comprehensive engineering education with strong foundation in electrical systems, electronics, and programming. Completed English Preparation Class (2017-2018) developing technical English proficiency.</p>
+                        <div class="course-achievements">
+                            <strong>🎓 Special Programs:</strong>
+                            <ul>
+                                <li>English Preparation Class (1 year, 2017-2018)</li>
+                                <li>Technical English proficiency development</li>
+                                <li>Engineering mathematics and physics</li>
+                                <li>Programming fundamentals and applications</li>
+                            </ul>
+                        </div>
+                        <div class="timeline-skills">
+                            <span class="timeline-skill">C++</span>
+                            <span class="timeline-skill">Python</span>
+                            <span class="timeline-skill">Electronics</span>
+                            <span class="timeline-skill">Signal Processing</span>
+                            <span class="timeline-skill">Mathematics</span>
+                            <span class="timeline-skill">Technical English</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="section fade-in">
+            <h2 class="section-title">
                 <span class="icon">📧</span>
                 Let's Connect
             </h2>
@@ -681,16 +1022,122 @@
             observer.observe(section);
         });
         
-        // Add gentle mouse parallax effect to leaves
+        // Timeline animation observer
+        const timelineObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.3,
+            rootMargin: '0px 0px -100px 0px'
+        });
+        
+        // Observe timeline items with staggered animation
+        document.querySelectorAll('.timeline-item').forEach((item, index) => {
+            item.style.transitionDelay = `${index * 0.2}s`;
+            timelineObserver.observe(item);
+        });
+        
+        // Enhanced mouse interaction with leaves
+        let mouseX = 0;
+        let mouseY = 0;
+        let isMouseMoving = false;
+        let mouseTimeout;
+        
         document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            isMouseMoving = true;
+            
+            clearTimeout(mouseTimeout);
+            mouseTimeout = setTimeout(() => {
+                isMouseMoving = false;
+            }, 100);
+            
+            handleLeafInteractions(e);
+        });
+        
+        function handleLeafInteractions(e) {
             const leaves = document.querySelectorAll('.leaf');
-            const strength = 0.02;
+            const mouseForce = isMouseMoving ? 150 : 80;
+            const maxDistance = 180;
             
             leaves.forEach((leaf, index) => {
-                const x = (e.clientX * strength * (index % 3 + 1));
-                const y = (e.clientY * strength * (index % 3 + 1));
+                const rect = leaf.getBoundingClientRect();
+                const leafX = rect.left + rect.width / 2;
+                const leafY = rect.top + rect.height / 2;
                 
-                leaf.style.transform += ` translate(${x}px, ${y}px)`;
+                const deltaX = mouseX - leafX;
+                const deltaY = mouseY - leafY;
+                const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+                
+                if (distance < maxDistance) {
+                    // Calculate interaction strength based on distance
+                    const strength = (maxDistance - distance) / maxDistance;
+                    const forceMagnitude = mouseForce * strength;
+                    
+                    // Calculate direction (leaves move away from mouse)
+                    const angle = Math.atan2(deltaY, deltaX);
+                    const forceX = -Math.cos(angle) * forceMagnitude;
+                    const forceY = -Math.sin(angle) * forceMagnitude;
+                    
+                    // Add some randomness for natural movement
+                    const randomX = (Math.random() - 0.5) * 20 * strength;
+                    const randomY = (Math.random() - 0.5) * 20 * strength;
+                    
+                    // Calculate rotation based on movement direction
+                    const rotation = Math.atan2(forceY, forceX) * (180 / Math.PI) + (index * 15);
+                    
+                    // Apply enhanced visual effects for close interactions
+                    if (distance < 100) {
+                        leaf.classList.add('mouse-nearby');
+                        if (distance < 60) {
+                            leaf.classList.add('mouse-interaction');
+                        } else {
+                            leaf.classList.remove('mouse-interaction');
+                        }
+                    } else {
+                        leaf.classList.remove('mouse-nearby', 'mouse-interaction');
+                    }
+                    
+                    // Apply transformation with enhanced effects
+                    const scale = 1 + (strength * 0.3);
+                    const currentTransform = leaf.style.transform || '';
+                    const baseTransform = currentTransform.replace(/translate\([^)]*\)|rotate\([^)]*\)|scale\([^)]*\)/g, '').trim();
+                    
+                    leaf.style.transform = `${baseTransform} translate(${forceX + randomX}px, ${forceY + randomY}px) rotate(${rotation}deg) scale(${scale})`;
+                    
+                    // Add subtle opacity change
+                    leaf.style.opacity = 0.4 + (strength * 0.4);
+                    
+                } else {
+                    // Reset leaf when mouse is far away
+                    leaf.classList.remove('mouse-nearby', 'mouse-interaction');
+                    
+                    // Smoothly return to original state
+                    setTimeout(() => {
+                        if (!leaf.classList.contains('mouse-nearby')) {
+                            const currentTransform = leaf.style.transform || '';
+                            const baseTransform = currentTransform.replace(/translate\([^)]*\)|rotate\([^)]*\)|scale\([^)]*\)/g, '').trim();
+                            leaf.style.transform = baseTransform;
+                            leaf.style.opacity = '0.7';
+                        }
+                    }, 200);
+                }
+            });
+        }
+        
+        // Enhanced mouse leave behavior
+        document.addEventListener('mouseleave', () => {
+            const leaves = document.querySelectorAll('.leaf');
+            leaves.forEach(leaf => {
+                leaf.classList.remove('mouse-nearby', 'mouse-interaction');
+                const currentTransform = leaf.style.transform || '';
+                const baseTransform = currentTransform.replace(/translate\([^)]*\)|rotate\([^)]*\)|scale\([^)]*\)/g, '').trim();
+                leaf.style.transform = baseTransform;
+                leaf.style.opacity = '0.7';
             });
         });
         
