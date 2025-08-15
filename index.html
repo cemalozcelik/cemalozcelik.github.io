@@ -3,10 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Cemal Özçelik - Software Developer, AI Enthusiast.">
+    <meta name="description" content="Cemal Özçelik - AI, Computer Vision ve Robotics uzmanı. Python, C++, TypeScript ile innovative çözümler.">
     <title>Cemal Özçelik - Software Engineer</title>
+    
+    <!-- Favicon & Icons -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💻</text></svg>">
+    <meta name="theme-color" content="#212529">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.cemalozcelik.com/">
+    <meta property="og:title" content="Cemal Özçelik - Software Engineer">
+    <meta property="og:description" content="AI, Computer Vision ve Robotics uzmanı. Python, C++, TypeScript ile innovative çözümler.">
+    <meta property="og:image" content="https://www.cemalozcelik.com/preview.png">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://www.cemalozcelik.com/">
+    <meta property="twitter:title" content="Cemal Özçelik - Software Engineer">
+    <meta property="twitter:description" content="AI, Computer Vision ve Robotics uzmanı. Python, C++, TypeScript ile innovative çözümler.">
+    <meta property="twitter:image" content="https://www.cemalozcelik.com/preview.png">
+    
+    <!-- SEO -->
+    <link rel="canonical" href="https://www.cemalozcelik.com/">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Cemal Özçelik">
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Cemal Özçelik",
+      "url": "https://www.cemalozcelik.com/",
+      "jobTitle": "Software Engineer",
+      "description": "AI, Computer Vision ve Robotics uzmanı",
+      "email": "cemaloz745@gmail.com",
+      "sameAs": [
+        "https://www.linkedin.com/in/cemal-ozcelik",
+        "https://github.com/cemalozcelik"
+      ],
+      "knowsAbout": ["Artificial Intelligence", "Computer Vision", "Robotics", "Python", "C++", "TypeScript"],
+      "alumniOf": [
+        {
+          "@type": "Organization",
+          "name": "Gebze Teknik Üniversitesi"
+        },
+        {
+          "@type": "Organization", 
+          "name": "Eskişehir Osmangazi Üniversitesi"
+        }
+      ]
+    }
+    </script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600&family=Inter:wght@300;400;500&display=swap');
+        
+        /* Skip to content link for accessibility */
+        .skip-to-content {
+            position: fixed;
+            top: -40px;
+            left: 6px;
+            background: #212529;
+            color: white;
+            padding: 8px 16px;
+            text-decoration: none;
+            border-radius: 0 0 4px 4px;
+            z-index: 1000;
+            transition: top 0.3s ease;
+        }
+        
+        .skip-to-content:focus {
+            top: 0;
+        }
+        
+        /* Reduced motion support */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.001ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.001ms !important;
+            }
+        }
         
         * {
             margin: 0;
@@ -198,6 +276,57 @@
             line-height: 1.7;
         }
         
+        /* Header improvements */
+        .header-actions {
+            margin-top: 25px;
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .cv-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #212529;
+            color: #ffffff;
+            padding: 12px 24px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            font-family: 'JetBrains Mono', monospace;
+            transition: all 0.3s ease;
+            border: 2px solid #212529;
+        }
+        
+        .cv-btn:hover {
+            background: #ffffff;
+            color: #212529;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .theme-toggle {
+            background: transparent;
+            border: 2px solid #212529;
+            color: #212529;
+            width: 45px;
+            height: 45px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .theme-toggle:hover {
+            background: #212529;
+            color: #ffffff;
+            transform: translateY(-2px);
+        }
+        
         .section {
             background: rgba(255, 255, 255, 0.9);
             margin-bottom: 30px;
@@ -271,10 +400,41 @@
         }
         
         .skill-tag:hover {
-            background: #212529;
+            background: #495057;
             color: #ffffff;
-            border-color: #212529;
+            border-color: #495057;
             transform: translateY(-1px);
+        }
+        
+        /* Project filtering */
+        .project-filters {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-btn {
+            background: #f8f9fa;
+            color: #495057;
+            border: 1px solid #dee2e6;
+            padding: 8px 16px;
+            cursor: pointer;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+        
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: #495057;
+            color: #ffffff;
+            border-color: #495057;
+        }
+        
+        .project-card.hidden {
+            display: none;
         }
         
         .projects-grid {
@@ -355,8 +515,8 @@
         }
         
         .btn:hover {
-            background: #ffffff;
-            color: #212529;
+            background: #495057;
+            color: #ffffff;
             transform: translateY(-1px);
         }
         
@@ -382,9 +542,9 @@
         }
         
         .contact-item:hover {
-            background: #212529;
+            background: #495057;
             color: #ffffff;
-            border-color: #212529;
+            border-color: #495057;
             transform: translateY(-2px);
         }
         
@@ -479,11 +639,11 @@
             border-right: 8px solid #f8f9fa;
         }
         
-        .timeline-item:hover .timeline-content {
-            background: #e9ecef;
-            border-color: #adb5bd;
+        body.dark-theme .timeline-content:hover {
+            background: #343a40;
+            border-color: #495057;
             transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
         }
         
         .timeline-item:hover .timeline-content::before {
@@ -541,9 +701,9 @@
         }
         
         .timeline-skill:hover {
-            background: #212529;
+            background: #495057;
             color: #ffffff;
-            border-color: #212529;
+            border-color: #495057;
             transform: translateY(-1px);
         }
         
@@ -649,6 +809,136 @@
             51%, 100% { opacity: 0; }
         }
         
+        /* Dark theme styles */
+        body.dark-theme {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #404040 100%);
+            color: #e9ecef;
+        }
+        
+        body.dark-theme .header {
+            background: rgba(33, 37, 41, 0.95);
+            border-color: #495057;
+        }
+        
+        body.dark-theme .section {
+            background: rgba(33, 37, 41, 0.95);
+            border-color: #495057;
+        }
+        
+        body.dark-theme .name {
+            color: #f8f9fa;
+        }
+        
+        body.dark-theme .section-title {
+            color: #f8f9fa;
+            border-color: #495057;
+        }
+        
+        body.dark-theme .skill-category,
+        body.dark-theme .project-card,
+        body.dark-theme .contact-item,
+        body.dark-theme .timeline-content {
+            background: #2d2d2d;
+            border-color: #495057;
+        }
+        
+        body.dark-theme .skill-category h3,
+        body.dark-theme .project-card h3,
+        body.dark-theme .timeline-content h3,
+        body.dark-theme .timeline-content h4,
+        body.dark-theme .project-item h4 {
+            color: #f8f9fa;
+        }
+        
+        body.dark-theme .timeline-date,
+        body.dark-theme .location,
+        body.dark-theme .project-item p,
+        body.dark-theme .timeline-content p,
+        body.dark-theme .project-highlight p,
+        body.dark-theme .course-achievements,
+        body.dark-theme .course-achievements li {
+            color: #adb5bd;
+        }
+        
+        body.dark-theme .project-highlight strong,
+        body.dark-theme .course-achievements strong {
+            color: #f8f9fa;
+        }
+        
+        body.dark-theme .project-item {
+            background: #1a1a1a;
+        }
+        
+        body.dark-theme .project-highlight {
+            background: rgba(248, 249, 250, 0.05);
+        }
+        
+        body.dark-theme .course-achievements {
+            background: rgba(108, 117, 125, 0.2);
+        }
+        
+        body.dark-theme .skill-tag,
+        body.dark-theme .timeline-skill {
+            background: #495057;
+            color: #f8f9fa;
+            border-color: #6c757d;
+        }
+        
+        body.dark-theme .skill-tag:hover,
+        body.dark-theme .timeline-skill:hover {
+            background: #868e96;
+            color: #ffffff;
+            border-color: #868e96;
+        }
+        
+        body.dark-theme .cv-btn,
+        body.dark-theme .theme-toggle {
+            background: #f8f9fa;
+            color: #212529;
+            border-color: #f8f9fa;
+        }
+        
+        body.dark-theme .cv-btn:hover,
+        body.dark-theme .theme-toggle:hover {
+            background: #212529;
+            color: #f8f9fa;
+        }
+        
+        body.dark-theme .filter-btn {
+            background: #2d2d2d;
+            color: #e9ecef;
+            border-color: #495057;
+        }
+        
+        body.dark-theme .filter-btn:hover,
+        body.dark-theme .filter-btn.active {
+            background: #868e96;
+            color: #ffffff;
+            border-color: #868e96;
+        }
+        
+        body.dark-theme .contact-item {
+            color: #e9ecef;
+        }
+        
+        body.dark-theme .contact-item:hover {
+            background: #868e96;
+            color: #ffffff;
+            border-color: #868e96;
+        }
+        
+        body.dark-theme .btn {
+            background: #f8f9fa;
+            color: #212529;
+            border-color: #f8f9fa;
+        }
+        
+        body.dark-theme .btn:hover {
+            background: #868e96;
+            color: #ffffff;
+            border-color: #868e96;
+        }
+        
         /* Responsive */
         @media (max-width: 768px) {
             .container {
@@ -703,6 +993,9 @@
     </style>
 </head>
 <body>
+    <!-- Skip to content for accessibility -->
+    <a href="#main" class="skip-to-content">Skip to content</a>
+    
     <!-- Wind and leaves animation -->
     <div class="wind-container" id="windContainer"></div>
     
@@ -712,7 +1005,7 @@
     <!-- Scroll to top button -->
     <button class="scroll-top" id="scrollTop">↑</button>
 
-    <div class="container">
+    <div class="container" id="main">
         <header class="header fade-in">
             <div class="profile-area">
                 <div class="profile-icon">💻</div>
@@ -723,6 +1016,14 @@
                     I build innovative solutions using modern programming languages and frameworks, focusing on 
                     clean code and elegant problem-solving.
                 </p>
+                <div class="header-actions">
+                    <a href="/cemal-ozcelik-cv.pdf" class="cv-btn" target="_blank" rel="noopener noreferrer">
+                        📄 Download CV
+                    </a>
+                    <button class="theme-toggle" id="themeToggle" title="Toggle theme">
+                        🌙
+                    </button>
+                </div>
             </div>
         </header>
         
@@ -768,17 +1069,23 @@
                 <span class="icon">📂</span>
                 Featured Projects
             </h2>
+            <div class="project-filters">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="robotics">Robotics</button>
+                <button class="filter-btn" data-filter="ai">AI/CV</button>
+                <button class="filter-btn" data-filter="algorithms">Algorithms</button>
+            </div>
             <div class="projects-grid">
-                <div class="project-card">
+                <div class="project-card" data-category="robotics algorithms">
                     <h3>Robotics & Algorithms</h3>
                     <div class="project-item">
                         <h4>Wall Track</h4>
                         <p>Wall tracking using Bug2 algorithm with HAMER robot. Advanced path planning and obstacle avoidance implementation.</p>
                         <div class="project-links">
-                            <a href="https://github.com/cemalozcelik/wall_track" class="btn" target="_blank">
+                            <a href="https://github.com/cemalozcelik/wall_track" class="btn" target="_blank" rel="noopener noreferrer">
                                 Code
                             </a>
-                            <a href="https://youtu.be/oqU4kFcNEf8" class="btn" target="_blank">
+                            <a href="https://youtu.be/oqU4kFcNEf8" class="btn" target="_blank" rel="noopener noreferrer">
                                 Demo
                             </a>
                         </div>
@@ -788,23 +1095,23 @@
                         <h4>Traveling Salesman Problem</h4>
                         <p>Genetic algorithm implementation for optimal pathfinding. Evolutionary optimization for complex routing problems.</p>
                         <div class="project-links">
-                            <a href="https://github.com/cemalozcelik/Traveling-Salesman-Problem" class="btn" target="_blank">
+                            <a href="https://github.com/cemalozcelik/Traveling-Salesman-Problem" class="btn" target="_blank" rel="noopener noreferrer">
                                 Code
                             </a>
-                            <a href="https://youtu.be/Jhf8t7_aIiI" class="btn" target="_blank">
+                            <a href="https://youtu.be/Jhf8t7_aIiI" class="btn" target="_blank" rel="noopener noreferrer">
                                 Demo
                             </a>
                         </div>
                     </div>
                 </div>
 
-                <div class="project-card">
+                <div class="project-card" data-category="ai">
                     <h3>AI & Computer Vision</h3>
                     <div class="project-item">
                         <h4>SIFT Basic</h4>
                         <p>Scale-Invariant Feature Transform implementation for robust image analysis and feature detection.</p>
                         <div class="project-links">
-                            <a href="https://github.com/cemalozcelik/sift-basic" class="btn" target="_blank">
+                            <a href="https://github.com/cemalozcelik/sift-basic" class="btn" target="_blank" rel="noopener noreferrer">
                                 Code
                             </a>
                         </div>
@@ -814,10 +1121,10 @@
                         <h4>YOLOv3 Traffic Sign Detection</h4>
                         <p>Real-time traffic sign detection system integrated with ROS for autonomous vehicle applications.</p>
                         <div class="project-links">
-                            <a href="https://github.com/cemalozcelik/yolov3_ros_traffic_sign_detect" class="btn" target="_blank">
+                            <a href="https://github.com/cemalozcelik/yolov3_ros_traffic_sign_detect" class="btn" target="_blank" rel="noopener noreferrer">
                                 Code
                             </a>
-                            <a href="https://youtu.be/gDueFX8bKuo" class="btn" target="_blank">
+                            <a href="https://youtu.be/gDueFX8bKuo" class="btn" target="_blank" rel="noopener noreferrer">
                                 Demo
                             </a>
                         </div>
@@ -933,15 +1240,15 @@
                 Let's Connect
             </h2>
             <div class="contact-grid">
-                <a href="mailto:cemaloz745@gmail.com" class="contact-item" target="_blank">
+                <a href="mailto:cemaloz745@gmail.com" class="contact-item">
                     <div class="contact-icon">✉</div>
                     <div class="contact-info">cemaloz745@gmail.com</div>
                 </a>
-                <a href="https://www.linkedin.com/in/cemal-ozcelik" class="contact-item" target="_blank">
+                <a href="https://www.linkedin.com/in/cemal-ozcelik" class="contact-item" target="_blank" rel="noopener noreferrer">
                     <div class="contact-icon">💼</div>
                     <div class="contact-info">LinkedIn Profile</div>
                 </a>
-                <a href="https://github.com/cemalozcelik" class="contact-item" target="_blank">
+                <a href="https://github.com/cemalozcelik" class="contact-item" target="_blank" rel="noopener noreferrer">
                     <div class="contact-icon">⚡</div>
                     <div class="contact-info">GitHub Profile</div>
                 </a>
@@ -950,11 +1257,17 @@
     </div>
 
     <script>
-        // Floating leaves animation
+        // Enhanced leaf animation with performance optimization
+        const MAX_LEAVES = 15;
+        let leafCount = 0;
+        
         function createLeaf() {
             const windContainer = document.getElementById('windContainer');
+            if (leafCount >= MAX_LEAVES) return;
+            
             const leaf = document.createElement('div');
             leaf.className = 'leaf';
+            leafCount++;
             
             // Different leaf characters for variety
             const leafChars = ['🍃', '🍂', '🌿', '🍁', '🌾'];
@@ -973,8 +1286,53 @@
             setTimeout(() => {
                 if (leaf.parentNode) {
                     leaf.parentNode.removeChild(leaf);
+                    leafCount--;
                 }
             }, 25000);
+        }
+        
+        // Project filtering functionality
+        function initProjectFilters() {
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            const projectCards = document.querySelectorAll('.project-card');
+            
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Update active button
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    
+                    const filter = btn.dataset.filter;
+                    
+                    projectCards.forEach(card => {
+                        if (filter === 'all' || card.dataset.category.includes(filter)) {
+                            card.classList.remove('hidden');
+                        } else {
+                            card.classList.add('hidden');
+                        }
+                    });
+                });
+            });
+        }
+        
+        // Theme toggle functionality
+        function initThemeToggle() {
+            const themeToggle = document.getElementById('themeToggle');
+            const body = document.body;
+            
+            // Check for saved theme
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            if (savedTheme === 'dark') {
+                body.classList.add('dark-theme');
+                themeToggle.textContent = '☀️';
+            }
+            
+            themeToggle.addEventListener('click', () => {
+                body.classList.toggle('dark-theme');
+                const isDark = body.classList.contains('dark-theme');
+                themeToggle.textContent = isDark ? '☀️' : '🌙';
+                localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            });
         }
         
         // Create leaves periodically
@@ -1172,10 +1530,16 @@
             type();
         }
         
-        // Start typing animation after a short delay
-        setTimeout(() => {
-            typeWriter(originalText, nameElement, 150);
-        }, 500);
+        // Initialize all functionality when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            initProjectFilters();
+            initThemeToggle();
+            
+            // Start typing animation after a short delay
+            setTimeout(() => {
+                typeWriter(originalText, nameElement, 150);
+            }, 500);
+        });
     </script>
 </body>
 </html>
